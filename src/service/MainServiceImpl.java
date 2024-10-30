@@ -1,15 +1,32 @@
 package service;
 
 import model.User;
+import repository.BookRepository;
+import repository.UserRepository;
 import utils.MyList;
 
 import java.time.LocalDate;
 
 public class MainServiceImpl implements MainService{
 
+    // Поля
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+    private User activeUser;
+
+    // Конструктор
+
+
+    public MainServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
+    }
+
+    // Методы
+
     @Override
     public void addBook(String author, String title, int year, String publisher) {
-
+        bookRepository.addBook(author, title, year, publisher);
     }
 
     @Override
