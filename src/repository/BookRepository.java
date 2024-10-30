@@ -1,5 +1,8 @@
 package repository;
 
+import model.Book;
+import utils.MyList;
+
 public interface BookRepository {
 
   //Добавление книги в общий список
