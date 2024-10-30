@@ -2,9 +2,29 @@ package repository;
 
 import model.Role;
 import model.User;
+import utils.MyArrayList;
 import utils.MyList;
 
 public class UserRepositoryImpl implements UserRepository {
+
+  /**
+   * Список пользователей.
+   */
+  private final MyList<User> users;
+
+
+  public UserRepositoryImpl() {
+    this.users = new MyArrayList<>();
+
+    // Добавить администраторов по умолчанию.
+    users.add(new User("admin@mietwagen.de", "A*,5QReA-J1CDo[", Role.ADMIN));
+
+
+    // Добавить пользователей по умолчанию.
+    users.add(new User("test@mietwagen.de", "!2345Qwerty"));
+    users.add(new User("sm@sergey-mavrodi.com", "MmM-4EVER!"));
+  }
+
 
   /**
    * Добавляет нового пользователя с указанной электронной почтой и паролем в репозиторий.
