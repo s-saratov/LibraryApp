@@ -89,7 +89,7 @@ public class UserRepositoryImpl implements UserRepository {
       return false;
     }
 
-    for (User user : users) {
+    for (User user : this.users) {
       if (user.getEmail().equals(email)) {
         return true;
       }
@@ -110,7 +110,7 @@ public class UserRepositoryImpl implements UserRepository {
     MyList<User> result = new MyArrayList<>();
 
     for (Role role : roles) {
-      for (User user : users) {
+      for (User user : this.users) {
         if (user.getRole().equals(role)) {
           result.add(user);
         }
@@ -133,7 +133,7 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    for (User user : users) {
+    for (User user : this.users) {
       if (user.getEmail().equals(email)) {
         return user;
       }
