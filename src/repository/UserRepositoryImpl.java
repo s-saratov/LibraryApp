@@ -1,5 +1,7 @@
 package repository;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import model.Role;
 import model.User;
 import utils.MyArrayList;
@@ -13,16 +15,23 @@ public class UserRepositoryImpl implements UserRepository {
   private final MyList<User> users;
 
 
+  /**
+   * Объект, отвечающий за генерацию уникальных ID.
+   */
+  private final AtomicInteger currentID = new AtomicInteger(1);
+
+
   public UserRepositoryImpl() {
     this.users = new MyArrayList<>();
 
+
     // Добавить администраторов по умолчанию.
-    users.add(new User("admin@mietwagen.de", "A*,5QReA-J1CDo[", Role.ADMIN));
+    this.users.add(new User("admin@mail.com", "A*,5QReA-J1CDo[", Role.ADMIN));
 
 
     // Добавить пользователей по умолчанию.
-    users.add(new User("test@mietwagen.de", "!2345Qwerty"));
-    users.add(new User("sm@sergey-mavrodi.com", "MmM-4EVER!"));
+    this.users.add(new User("max@mail.com", "!2345Qwerty"));
+    this.users.add(new User("user2@mail.com", "MmM-4EVER!"));
   }
 
 
@@ -35,7 +44,36 @@ public class UserRepositoryImpl implements UserRepository {
    */
   @Override
   public User addUser(String email, String password) {
-    return null;
+    if (email == null || password == null) {
+      return null;
+    }
+
+    User user = new User(this.currentID.getAndIncrement(), email, password);
+
+    this.users.add(user);
+
+    return user;
+  }
+
+
+  /**
+   * Добавляет нового пользователя с указанной электронной почтой, паролем и ролью в репозиторий.
+   *
+   * @param email    Электронная почта пользователя. Должна быть уникальной в системе.
+   * @param password Пароль пользователя.
+   * @param role     Роль пользователя.
+   * @return Объект пользователя {@code User}.
+   */
+  public User addUser(String email, String password, Role role) {
+    if (email == null || password == null || role == null) {
+      return null;
+    }
+
+    User user = new User(this.currentID.getAndIncrement(), email, password, role);
+
+    this.users.add(user);
+
+    return user;
   }
 
 
@@ -47,6 +85,16 @@ public class UserRepositoryImpl implements UserRepository {
    */
   @Override
   public boolean isEmailExists(String email) {
+    if (email == null) {
+      return false;
+    }
+
+    for (User user : users) {
+      if (user.getEmail().equals(email)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -59,7 +107,17 @@ public class UserRepositoryImpl implements UserRepository {
    */
   @Override
   public MyList<User> getUsersByRole(Role... roles) {
-    return null;
+    MyList<User> result = new MyArrayList<>();
+
+    for (Role role : roles) {
+      for (User user : users) {
+        if (user.getRole().equals(role)) {
+          result.add(user);
+        }
+      }
+    }
+
+    return result;
   }
 
 
@@ -71,6 +129,16 @@ public class UserRepositoryImpl implements UserRepository {
    */
   @Override
   public User getUserByEmail(String email) {
+    if (email == null) {
+      return null;
+    }
+
+    for (User user : users) {
+      if (user.getEmail().equals(email)) {
+        return user;
+      }
+    }
+
     return null;
   }
 
