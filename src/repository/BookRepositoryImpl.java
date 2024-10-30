@@ -1,4 +1,4 @@
 package repository;
 
-public class BookRepositoryImpl implements BookRepository{
+public class BookRepositoryImpl implements BookRepository {
 }
