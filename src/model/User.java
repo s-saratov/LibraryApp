@@ -22,11 +22,12 @@ public class User {
     private List<Book> userBooks;
 
     // Конструктор User
-    public User(int id, String email, String password) {
+    public User(int id, String email, String password, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.role = Role.USER;                 // По умолчанию "Пользователь"
+        this.role = role != null ? role : Role.USER;
+        /*Если роль не была задана при создании пользователя - по умолчанию "USER"*/
         this.userBooks = new ArrayList<>();   // Инициализация списка книг у пользователя
     }
 
