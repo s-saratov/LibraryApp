@@ -48,4 +48,13 @@ public interface UserRepository {
    */
   public User getUserByEmail(String email);
 
+
+  /**
+   * Находит и возвращает пользователя по его уникальному идентификатору.
+   *
+   * @param id Уникальный идентификатор пользователя.
+   * @return Объект пользователя {@code User}, если найден; {@code null} иначе.
+   */
+  public User getUserById (int id);
+
 }
