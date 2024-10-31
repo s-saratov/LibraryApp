@@ -20,7 +20,6 @@ public class Book {
     private String publisher;
 
     // Статус книги
-    // Новый коммит
     private BookStatus status;
 
     // Конструктор класса Book
