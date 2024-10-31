@@ -1,5 +1,7 @@
 package service;
 
+import model.Book;
+import model.Role;
 import model.User;
 import utils.MyList;
 
@@ -45,10 +47,13 @@ public interface MainService {
     public User getActiveUser();
 
     // Возвращает список пользователей по заданным ролям
-    public MyList<User> getUsersByRole(Role... roles);
+    public MyList<User> getUsersByRole(Role roles, Role user);
+
+    // Возвращает список пользователей по заданным ролям
+    MyList<User> getUsersByRole(Role... roles);
 
     // Принимает ID книги и возвращает адрес электронной почты пользователя, у которого она находится
-    String getBorrowersEmail (int id);
+    User getBorrowersEmail (int id);
 
     // === UPDATE ===
 
