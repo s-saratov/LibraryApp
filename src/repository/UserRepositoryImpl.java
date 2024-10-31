@@ -26,12 +26,12 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     // Добавить администраторов по умолчанию.
-    this.users.add(new User("admin@mail.com", "A*,5QReA-J1CDo[", Role.ADMIN));
+    this.addUser("admin@mail.com", "A*,5QReA-J1CDo[", Role.ADMIN);
 
 
     // Добавить пользователей по умолчанию.
-    this.users.add(new User("max@mail.com", "!2345Qwerty"));
-    this.users.add(new User("user2@mail.com", "MmM-4EVER!"));
+    this.addUser("max@mail.com", "!2345Qwerty");
+    this.addUser("user2@mail.com", "MmM-4EVER!");
   }
 
 
@@ -135,6 +135,23 @@ public class UserRepositoryImpl implements UserRepository {
 
     for (User user : this.users) {
       if (user.getEmail().equals(email)) {
+        return user;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Находит и возвращает пользователя по его уникальному идентификатору.
+   *
+   * @param id Уникальный идентификатор пользователя.
+   * @return Объект пользователя {@code User}, если найден; {@code null} иначе.
+   */
+  @Override
+  public User getUserById(int id) {
+    for (User user : this.users) {
+      if (user.getId() == id) {
         return user;
       }
     }
