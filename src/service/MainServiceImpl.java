@@ -3,6 +3,7 @@ package service;
 import model.Book;
 import model.Role;
 import model.User;
+import model.BookStatus
 import repository.BookRepository;
 import repository.UserRepository;
 import utils.MyList;
@@ -108,7 +109,7 @@ public class MainServiceImpl implements MainService{
     // Возвращает список пользователей по заданным ролям
     @Override
     public MyList<User> getUsersByRole(Role... roles) {
-        return repositoryUser.getUsersByRole(roles);
+        return userRepository.getUsersByRole(roles);
     }
 
     // Принимает ID книги и возвращает адрес электронной почты пользователя, у которого она находится
