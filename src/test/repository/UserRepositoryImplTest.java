@@ -1,4 +1,4 @@
-package test.service;
+package test.repository;
 
 import model.User;
 import repository.UserRepositoryImpl;
