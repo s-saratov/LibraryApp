@@ -27,7 +27,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role != null ? role : Role.USER;
-        /*Если роль не была задана при создании пользователя - по умолчанию "USER"*/
+        /*Если роль не была задана при создании пользователя - по умолчанию "USER" */
         this.userBooks = new ArrayList<>();   // Инициализация списка книг у пользователя
     }
 
