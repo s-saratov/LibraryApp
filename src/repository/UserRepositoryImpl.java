@@ -106,6 +106,16 @@ public class UserRepositoryImpl implements UserRepository {
 
 
   /**
+   * Возвращает список всех пользователей.
+   *
+   * @return {@code MyList<User>} Список всех пользователей.
+   */
+  public MyList<User> getAllUsers() {
+    return this.users;
+  }
+
+
+  /**
    * Возвращает список пользователей, имеющих указанные роли.
    *
    * @param roles Роли, по которым осуществляется фильтрация пользователей.
