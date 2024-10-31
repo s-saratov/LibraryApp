@@ -8,7 +8,7 @@ import utils.MyList;
  * Интерфейс репозитория для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации
  * пользователей в системе.
  *
- * @author Maksym Stoianov
+ * @author <a href="stoianov.maksym@gmail.com">Maksym Stoianov</a>
  */
 public interface UserRepository {
 

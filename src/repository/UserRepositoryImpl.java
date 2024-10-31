@@ -7,6 +7,12 @@ import model.User;
 import utils.MyArrayList;
 import utils.MyList;
 
+/**
+ * Репозиторий для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации
+ * пользователей в системе.
+ *
+ * @author <a href="stoianov.maksym@gmail.com">Maksym Stoianov</a>
+ */
 public class UserRepositoryImpl implements UserRepository {
 
   /**
@@ -141,6 +147,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     return null;
   }
+
 
   /**
    * Находит и возвращает пользователя по его уникальному идентификатору.
