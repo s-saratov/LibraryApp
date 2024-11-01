@@ -23,6 +23,9 @@ public class Book {
   // Статус книги
   private BookStatus status;
 
+  // Дата взятия книги
+  private LocalDate borrowDate;
+
   // Конструктор класса Book
   public Book(int id, String author, String title, int year, String publisher) {
     this.id = id;
@@ -103,8 +106,14 @@ public class Book {
   }
 
 
+  // Возвращает дату, когда была взята книга
+  public LocalDate getBorrowDate() {
+    return borrowDate;
+  }
+
+  // Устанавливает новую дату взятия книги
   public void setBorrowDate(LocalDate newBorrowDate) {
-    // TODO: setBorrowDate()
+    this.borrowDate = newBorrowDate;
   }
 
 
