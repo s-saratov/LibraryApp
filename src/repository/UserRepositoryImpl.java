@@ -68,7 +68,7 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    if (!this.isEmailExists(email)) {
+    if (this.isEmailExists(email)) {
       return this.getUserByEmail(email);
     }
 
@@ -101,7 +101,7 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    if (!this.isEmailExists(email)) {
+    if (this.isEmailExists(email)) {
       User user = this.getUserByEmail(email);
 
       user.setRole(role);
