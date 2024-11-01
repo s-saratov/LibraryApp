@@ -2,7 +2,7 @@ package model;
 
 import utils.MyArrayList;
 import utils.MyList;
-import utils.ValidationUtils;
+import utils.Utils;
 
 public class User {
 
@@ -24,8 +24,8 @@ public class User {
   // Конструктор User с параметром роли
   public User(int id, String email, String password, Role role) {
     this.id = id;
-    this.email = ValidationUtils.isValidEmail(email) ? email : null;
-    this.password = ValidationUtils.isValidPassword(password) ? password : null;
+    this.email = Utils.isValidEmail(email) ? email : null;
+    this.password = Utils.isValidPassword(password) ? password : null;
     this.role = role != null ? role : Role.USER;
     /* Если роль не была задана при создании пользователя - по умолчанию "USER" */
     this.userBooks = new MyArrayList<>();   // Инициализация списка книг у пользователя
