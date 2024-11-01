@@ -60,6 +60,18 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
+    if (!Utils.isValidEmail(email)) {
+      return null;
+    }
+
+    if (!Utils.isValidPassword(password)) {
+      return null;
+    }
+
+    if (!this.isEmailExists(email)) {
+      return this.getUserByEmail(email);
+    }
+
     User user = new User(this.currentID.getAndIncrement(), email, password);
 
     this.users.add(user);
@@ -90,7 +102,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     if (!this.isEmailExists(email)) {
-      return this.getUserByEmail(email);
+      User user = this.getUserByEmail(email);
+
+      user.setRole(role);
+
+      return user;
     }
 
     User user = new User(this.currentID.getAndIncrement(), email, password, role);
