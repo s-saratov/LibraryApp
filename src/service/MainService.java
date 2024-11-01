@@ -43,6 +43,9 @@ public interface MainService {
     // Возвращает объект пользователя по адресу электронной почты
     public User getUserByEmail(String email);
 
+    // Возвращает объект пользователя по ID
+    public User getUserByID(int id);
+
     // Возвращает активного пользователя
     public User getActiveUser();
 

@@ -1,5 +1,10 @@
 package utils;
 
+import model.Book;
+
+import java.math.BigInteger;
+import java.time.Year;
+
 public class Utils {
 
     /**
@@ -152,4 +157,13 @@ public class Utils {
         return true;
     }
 
+    // Возвращает список книг в табличном формате
+    public static String printBooks(MyList<Book> books) {
+        String result = String.format("\u001B[33m%-5s %-20s %-35s %-10s %-25s\u001B[0m\n", "ID:", "Author:", "Title:", "Year:", "Publisher:");
+        for (Book book : books) {
+            result = result.concat(String.format("%-5d %-20s %-35s %-10d %-25s\n",
+                    book.getId(), book.getAuthor(), book.getTitle(), book.getYear(), book.getPublisher()));
+        }
+        return result;
+    }
 }

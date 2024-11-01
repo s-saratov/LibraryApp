@@ -2,6 +2,7 @@ package repository;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import model.Book;
 import model.Role;
 import model.User;
 import utils.MyArrayList;
@@ -37,7 +38,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     // Добавить пользователей по умолчанию.
     this.addUser("max@mail.com", "!2345Qwerty");
-    this.addUser("user2@mail.com", "MmM-4EVER!");
+    this.addUser("user2@mail.com", "6789()Asdf");
+
+    // Добавить заблокированного пользователя
+    this.addUser("sm@sergey-mavrodi.com", "MmM-4EVER!", Role.BLOCKED);
+
   }
 
 

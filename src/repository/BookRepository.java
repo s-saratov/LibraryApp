@@ -14,6 +14,7 @@ public interface BookRepository {
   MyList<Book> getBooksByTitle(String title);
   MyList<Book> getBooksByAuthor(String author);
   MyList<Book> getFreeBooks();
+  public String toString();
 
   //Удаление книги
   void deleteBook(Book book);

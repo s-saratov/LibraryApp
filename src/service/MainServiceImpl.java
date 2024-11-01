@@ -94,6 +94,12 @@ public class MainServiceImpl implements MainService {
     return 0;
   }
 
+  // Возвращает объект пользователя по ID
+  @Override
+  public User getUserByID(int id) {
+    return userRepository.getUserById(id);
+  }
+
   // Возвращает объект пользователя по адресу электронной почты
   @Override
   public User getUserByEmail(String email) {
