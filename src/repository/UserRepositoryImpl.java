@@ -10,8 +10,8 @@ import utils.MyList;
 import utils.Utils;
 
 /**
- * Репозиторий для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации
- * пользователей в системе.
+ * Репозиторий для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации пользователей в
+ * системе.
  *
  * @author <a href="stoianov.maksym@gmail.com">Maksym Stoianov</a>
  */
@@ -35,6 +35,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     // Добавить администраторов по умолчанию.
     this.addUser("admin@mail.com", "A*,5QReA-J1CDo[", Role.ADMIN);
+    this.addUser("admin1@mail.com", "A*,5QReA-J1C1", Role.ADMIN);
+    this.addUser("admin2@mail.com", "A*,5QReA-J12", Role.ADMIN);
 
 
     // Добавить пользователей по умолчанию.
@@ -60,13 +62,13 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    if (!Utils.isValidEmail(email)) {
-      return null;
-    }
-
-    if (!Utils.isValidPassword(password)) {
-      return null;
-    }
+//    if (Utils.isValidEmail(email)) {
+//      return null;
+//    }
+//
+//    if (Utils.isValidPassword(password)) {
+//      return null;
+//    }
 
     if (this.isEmailExists(email)) {
       return this.getUserByEmail(email);
@@ -93,13 +95,13 @@ public class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    if (!Utils.isValidEmail(email)) {
-      return null;
-    }
-
-    if (!Utils.isValidPassword(password)) {
-      return null;
-    }
+//    if (Utils.isValidEmail(email)) {
+//      return null;
+//    }
+//
+//    if (Utils.isValidPassword(password)) {
+//      return null;
+//    }
 
     if (this.isEmailExists(email)) {
       User user = this.getUserByEmail(email);
