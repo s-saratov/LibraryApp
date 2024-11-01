@@ -30,9 +30,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void addBook(String author, String title, int year, String publisher) {
+    public boolean addBook(String author, String title, int year, String publisher) {
         Book book = new Book(currentID.getAndIncrement(), author, title, year, publisher);
+
         books.add(book);
+
+        return true;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class BookRepositoryImpl implements BookRepository {
                 return book;
             }
         }
-        //Если книга не найдена, возвращаем null
+        //Если книга не найдена, возвращаю null
         return null;
     }
 
