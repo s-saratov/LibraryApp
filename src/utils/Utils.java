@@ -5,6 +5,7 @@ import model.User;
 
 import java.math.BigInteger;
 import java.time.Year;
+import java.util.Arrays;
 
 public class Utils {
 
@@ -148,6 +149,7 @@ public class Utils {
         }
 
         // NOTE: Можно вернуть массив, если требуется указать, какие именно проверки не выполнены.
+        // System.out.println(Arrays.toString(result));
 
         for (boolean item : result) {
             if (!item) {
@@ -158,6 +160,7 @@ public class Utils {
         return true;
     }
 
+
     // Возвращает список книг в табличном формате
     public static String printBooks(MyList<Book> books) {
         String result = String.format("\u001B[33m%-5s %-20s %-35s %-10s %-25s\u001B[0m\n", "ID:", "Author:", "Title:", "Year:", "Publisher:");
@@ -167,6 +170,7 @@ public class Utils {
         }
         return result;
     }
+
 
     // Возвращает список пользователей в табличном формате
     public static String printUsers(MyList<User> users) {
