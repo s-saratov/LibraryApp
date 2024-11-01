@@ -2,6 +2,7 @@ package model;
 
 import utils.MyArrayList;
 import utils.MyList;
+import utils.ValidationUtils;
 
 public class User {
 
@@ -23,8 +24,8 @@ public class User {
   // Конструктор User с параметром роли
   public User(int id, String email, String password, Role role) {
     this.id = id;
-    this.email = email;
-    this.password = password;
+    this.email = ValidationUtils.isValidEmail(email) ? email : null;
+    this.password = ValidationUtils.isValidPassword(password) ? password : null;
     this.role = role != null ? role : Role.USER;
     /* Если роль не была задана при создании пользователя - по умолчанию "USER" */
     this.userBooks = new MyArrayList<>();   // Инициализация списка книг у пользователя
@@ -44,16 +45,26 @@ public class User {
     return email;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public String setEmail(String email) {
+    if (ValidationUtils.isValidEmail(email)) {
+      this.email = email;
+      return email;
+    } else {
+      return null;
+    }
   }
 
   public String getPassword() {
     return password;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public String setPassword(String password) {
+    if (ValidationUtils.isValidPassword(password)) {
+      this.password = password;
+      return password;
+    } else {
+      return null;
+    }
   }
 
   public Role getRole() {
@@ -74,16 +85,14 @@ public class User {
     userBooks.remove(book);
   }
 
-
   /**
-   * Выдает список книг всех книг пользователя.
+   * Выдает список всех книг пользователя.
    *
-   * @return
+   * @return список книг
    */
   public MyList<Book> getUserBooks() {
     return userBooks;
   }
-
 
   /**
    * Возвращает список книг пользователя, упорядоченные по названию в алфавитном порядке.
@@ -103,7 +112,6 @@ public class User {
     }
 
     // Пузырьковая сортировка
-
     int n = result.size();
 
     for (int i = 0; i < n - 1; i++) {
@@ -120,7 +128,6 @@ public class User {
     return result;
   }
 
-
   /**
    * Выдает список книг пользователя, упорядоченные по срокам возврата.
    *
@@ -131,15 +138,14 @@ public class User {
     return null;
   }
 
-
   // Переопределение метода toString для печати информации о пользователе
   @Override
   public String toString() {
     return "User{" +
-           "id=" + id +
-           ", email='" + email + '\'' +
-           ", роль=" + role +
-           ", список книг=" + userBooks +
-           '}';
+            "id=" + id +
+            ", email='" + email + '\'' +
+            ", роль=" + role +
+            ", список книг=" + userBooks +
+            '}';
   }
 }
