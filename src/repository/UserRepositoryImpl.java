@@ -2,11 +2,18 @@ package repository;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import model.Book;
 import model.Role;
 import model.User;
 import utils.MyArrayList;
 import utils.MyList;
 
+/**
+ * Репозиторий для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации
+ * пользователей в системе.
+ *
+ * @author <a href="stoianov.maksym@gmail.com">Maksym Stoianov</a>
+ */
 public class UserRepositoryImpl implements UserRepository {
 
   /**
@@ -26,12 +33,16 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     // Добавить администраторов по умолчанию.
-    this.users.add(new User("admin@mail.com", "A*,5QReA-J1CDo[", Role.ADMIN));
+    this.addUser("admin@mail.com", "A*,5QReA-J1CDo[", Role.ADMIN);
 
 
     // Добавить пользователей по умолчанию.
-    this.users.add(new User("max@mail.com", "!2345Qwerty"));
-    this.users.add(new User("user2@mail.com", "MmM-4EVER!"));
+    this.addUser("max@mail.com", "!2345Qwerty");
+    this.addUser("user2@mail.com", "6789()Asdf");
+
+    // Добавить заблокированного пользователя
+    this.addUser("sm@sergey-mavrodi.com", "MmM-4EVER!", Role.BLOCKED);
+
   }
 
 
@@ -100,6 +111,16 @@ public class UserRepositoryImpl implements UserRepository {
 
 
   /**
+   * Возвращает список всех пользователей.
+   *
+   * @return {@code MyList<User>} Список всех пользователей.
+   */
+  public MyList<User> getAllUsers() {
+    return this.users;
+  }
+
+
+  /**
    * Возвращает список пользователей, имеющих указанные роли.
    *
    * @param roles Роли, по которым осуществляется фильтрация пользователей.
@@ -135,6 +156,24 @@ public class UserRepositoryImpl implements UserRepository {
 
     for (User user : this.users) {
       if (user.getEmail().equals(email)) {
+        return user;
+      }
+    }
+
+    return null;
+  }
+
+
+  /**
+   * Находит и возвращает пользователя по его уникальному идентификатору.
+   *
+   * @param id Уникальный идентификатор пользователя.
+   * @return Объект пользователя {@code User}, если найден; {@code null} иначе.
+   */
+  @Override
+  public User getUserById(int id) {
+    for (User user : this.users) {
+      if (user.getId() == id) {
         return user;
       }
     }

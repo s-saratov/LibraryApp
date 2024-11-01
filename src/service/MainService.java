@@ -1,5 +1,7 @@
 package service;
 
+import model.Book;
+import model.Role;
 import model.User;
 import utils.MyList;
 
@@ -29,6 +31,9 @@ public interface MainService {
     // Возвращает книгу по ID
     Book getBookByID(int id);
 
+    // Возвращает список книг по названию
+    public MyList<Book> getBooksByTitle(String title);
+
     // Возвращает список книг по автору
     MyList<Book> getBooksByAuthor(String author);
 
@@ -41,14 +46,20 @@ public interface MainService {
     // Возвращает объект пользователя по адресу электронной почты
     public User getUserByEmail(String email);
 
+    // Возвращает объект пользователя по ID
+    public User getUserByID(int id);
+
     // Возвращает активного пользователя
     public User getActiveUser();
 
     // Возвращает список пользователей по заданным ролям
-    public MyList<User> getUsersByRole(Role... roles);
+    public MyList<User> getUsersByRole(Role roles, Role user);
+
+    // Возвращает список пользователей по заданным ролям
+    MyList<User> getUsersByRole(Role... roles);
 
     // Принимает ID книги и возвращает адрес электронной почты пользователя, у которого она находится
-    String getBorrowersEmail (int id);
+    User getBorrowersEmail (int id);
 
     // === UPDATE ===
 

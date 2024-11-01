@@ -5,15 +5,33 @@ import model.BookStatus;
 import utils.MyList;
 import utils.MyArrayList;
 
+import java.time.Year;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class BookRepositoryImpl implements BookRepository {
 
-    private final MyList<Book> books = new MyArrayList<>();
+    // Поля
+
+    private final MyList<Book> books;                                         // список книг
+    private final AtomicInteger currentID = new AtomicInteger(1);   // объект, отвечающий за генерацию уникальных ID
+
+    public BookRepositoryImpl() {
+        this.books = new MyArrayList<>();
+        addBook("George Orwell", "1984", 1950, "Secker & Warburg");
+        addBook("Harper Lee", "To Kill a Mockingbird", 1960, "J.B. Lippincott & Co.");
+        addBook("J.R.R. Tolkien", "The Lord of the Rings", 1954, "George Allen & Unwin");
+        addBook("Jane Austen", "Pride and Prejudice", 1813, "T. Egerton, Whitehall");
+        addBook("Mark Twain", "The Adventures of Huckleberry Finn", 1885, "Chatto & Windus / Charles L. Webster And Company");
+        addBook("F. Scott Fitzgerald", "The Great Gatsby", 1925, "Charles Scribner's Sons");
+        addBook("Mary Shelley", "Frankenstein", 1823, "G. and W.B. Whittaker");
+        addBook("Charlotte Brontë", "Jane Eyre", 1847, "Smith, Elder & Co.");
+        addBook("Herman Melville", "Moby-Dick", 1851, "Harper & Brothers");
+        addBook("Emily Brontë", "Wuthering Heights", 1847, "Thomas Cautley Newby");
+    }
 
     @Override
     public void addBook(String author, String title, int year, String publisher) {
-         // Присвою уникальный ID на основе текущего размера списка
-        int id = books.size() + 1;
-        Book book = new Book(id, author, title, year, publisher);
+        Book book = new Book(currentID.getAndIncrement(), author, title, year, publisher);
         books.add(book);
     }
 
@@ -70,5 +88,15 @@ public class BookRepositoryImpl implements BookRepository {
     public void deleteBook(Book book) {
         // Удаляю книгу из списка
         books.remove(book);
+    }
+
+    @Override
+    public String toString() {
+        String result = String.format("%-20s %-30s %-10s %-25s\n", "Author:", "Title", "Year", "Publisher");
+        for (Book book : books) {
+            result = result.concat(String.format("%-20s %-30s %-10d %-25s\n",
+                    book.getAuthor(), book.getTitle(), book.getYear(), book.getPublisher()));
+        }
+        return result;
     }
 }

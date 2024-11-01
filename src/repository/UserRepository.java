@@ -8,7 +8,7 @@ import utils.MyList;
  * Интерфейс репозитория для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации
  * пользователей в системе.
  *
- * @author Maksym Stoianov
+ * @author <a href="stoianov.maksym@gmail.com">Maksym Stoianov</a>
  */
 public interface UserRepository {
 
@@ -47,5 +47,14 @@ public interface UserRepository {
    * @return Объект пользователя {@code User}, если найден; {@code null} иначе.
    */
   public User getUserByEmail(String email);
+
+
+  /**
+   * Находит и возвращает пользователя по его уникальному идентификатору.
+   *
+   * @param id Уникальный идентификатор пользователя.
+   * @return Объект пользователя {@code User}, если найден; {@code null} иначе.
+   */
+  public User getUserById (int id);
 
 }
