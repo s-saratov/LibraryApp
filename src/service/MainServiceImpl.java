@@ -147,7 +147,7 @@ public class MainServiceImpl implements MainService {
   // === UPDATE ===
 
   // Осуществляет взятие книги в прочтение и возвращает статус успеха операции (сегодняшней датой)
-  @Override
+ @Override
   public boolean takeBook(int id) {
     if (id < 0) return false; // исключаем передачу некорректных данных
     Book book = bookRepository.getByID(id);
@@ -157,11 +157,23 @@ public class MainServiceImpl implements MainService {
     return true;
   }
 
+
+
+
   // Осуществляет взятие книги в прочтение и возвращает статус успеха операции (с конкретной датой, отличающейся от сегодняшней)
   @Override
-  public boolean takeBook(int id, LocalDate NewDate) {
-    // TODO: написать реализацию!!!
-    return false;
+  public boolean takeBook(int id, LocalDate newDate) {
+    // Проверка на корректность данных
+    if (id < 0 || newDate == null) return false;
+    Book book = bookRepository.getByID(id);
+    // Проверка, свободна ли книга
+    if (book == null || book.isBusy()) return false;
+
+    book.setStatus(BookStatus.BORROWED);
+    // Устанавливаем дату взятия
+    book.setBorrowDate(newDate);
+    activeUser.addBookToUserBooks(book);
+    return true;
   }
 
   // Изменяет дату взятия книги в прочтение и возвращает статус успеха операции
