@@ -12,7 +12,7 @@ public interface MainService {
     // === CREATE ===
 
     // Добавляет книгу в список
-    void addBook(String author, String title, int year, String publisher);
+    boolean addBook(String author, String title, int year, String publisher);
 
     // Регистрирует пользователя на основании переданных адреса электронной почты и пароля, возвращает экземпляр класса
     User registerUser (String email, String password);

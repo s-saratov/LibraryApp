@@ -6,7 +6,7 @@ import utils.MyList;
 public interface BookRepository {
 
   //Добавление книги в общий список
-  void addBook(String author, String title, int year, String publisher);
+  boolean addBook(String author, String title, int year, String publisher);
 
   //Получение информации о книгах
   MyList<Book> getAllBooks();
