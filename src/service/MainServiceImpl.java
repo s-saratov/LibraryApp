@@ -38,7 +38,7 @@ public class MainServiceImpl implements MainService {
       return null;
     }
 
-    if (Utils.isValidEmail(email))  {
+    if (!Utils.isValidEmail(email))  {
       return null;
     }
 
