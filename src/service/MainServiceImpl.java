@@ -119,15 +119,15 @@ public class MainServiceImpl implements MainService {
   }
 
 
-  /**
-   * @param roles
-   * @param user
-   * @return
-   */
-  @Override
-  public MyList<User> getUsersByRole(Role roles, Role user) {
-    return null;
-  }
+//  /**
+//   * @param roles
+//   * @param user
+//   * @return
+//   */
+//  @Override
+//  public MyList<User> getUsersByRole(Role roles, Role user) {
+//    return null;
+//  }
 
 
   // Возвращает список пользователей по заданным ролям

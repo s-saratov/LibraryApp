@@ -52,8 +52,8 @@ public interface MainService {
     // Возвращает активного пользователя
     public User getActiveUser();
 
-    // Возвращает список пользователей по заданным ролям
-    public MyList<User> getUsersByRole(Role roles, Role user);
+//    // Возвращает список пользователей по заданным ролям
+//    public MyList<User> getUsersByRole(Role roles, Role user);
 
     // Возвращает список пользователей по заданным ролям
     MyList<User> getUsersByRole(Role... roles);
