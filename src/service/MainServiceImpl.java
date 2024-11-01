@@ -34,15 +34,16 @@ public class MainServiceImpl implements MainService {
 
   @Override
   public User registerUser(String email, String password) {
+
     if (email == null || password == null) {
       return null;
     }
 
-    if (Utils.isValidEmail(email))  {
+    if (!Utils.isValidEmail(email))  {
       return null;
     }
 
-    if (Utils.isValidPassword(password))  {
+    if (!Utils.isValidPassword(password))  {
       return null;
     }
 
