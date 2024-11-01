@@ -7,6 +7,7 @@ import model.Role;
 import model.User;
 import utils.MyArrayList;
 import utils.MyList;
+import utils.Utils;
 
 /**
  * Репозиторий для управления пользователями. Предоставляет методы для добавления, поиска и фильтрации
@@ -78,6 +79,18 @@ public class UserRepositoryImpl implements UserRepository {
   public User addUser(String email, String password, Role role) {
     if (email == null || password == null || role == null) {
       return null;
+    }
+
+    if (!Utils.isValidEmail(email)) {
+      return null;
+    }
+
+    if (!Utils.isValidPassword(password)) {
+      return null;
+    }
+
+    if (!this.isEmailExists(email)) {
+      return this.getUserByEmail(email);
     }
 
     User user = new User(this.currentID.getAndIncrement(), email, password, role);

@@ -1,5 +1,6 @@
 package service;
 
+import jdk.jshell.execution.Util;
 import model.Book;
 import model.Role;
 import model.User;
@@ -7,6 +8,7 @@ import model.BookStatus;
 import repository.BookRepository;
 import repository.UserRepository;
 import utils.MyList;
+import utils.Utils;
 
 import java.time.LocalDate;
 
@@ -32,11 +34,25 @@ public class MainServiceImpl implements MainService {
 
   @Override
   public User registerUser(String email, String password) {
-    if (email == null || password == null) return null;
+    if (email == null || password == null) {
+      return null;
+    }
+
+    if (!Utils.isValidEmail(email))  {
+      System.out.println("Email is not valid!");
+      return null;
+    }
+
+    if (!Utils.isValidPassword(password))  {
+      System.out.println("Password is not valid!");
+      return null;
+    }
+
     if (userRepository.isEmailExists(email)) {
       System.out.println("Email already exists");
       return null;
     }
+
     return userRepository.addUser(email, password);
   }
 
