@@ -39,17 +39,14 @@ public class MainServiceImpl implements MainService {
     }
 
     if (!Utils.isValidEmail(email))  {
-      System.out.println("Email is not valid!");
       return null;
     }
 
     if (!Utils.isValidPassword(password))  {
-      System.out.println("Password is not valid!");
       return null;
     }
 
     if (userRepository.isEmailExists(email)) {
-      System.out.println("Email already exists");
       return null;
     }
 
