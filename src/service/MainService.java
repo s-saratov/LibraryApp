@@ -31,6 +31,9 @@ public interface MainService {
     // Возвращает книгу по ID
     Book getBookByID(int id);
 
+    // Возвращает список книг по названию
+    public MyList<Book> getBooksByTitle(String title);
+
     // Возвращает список книг по автору
     MyList<Book> getBooksByAuthor(String author);
 

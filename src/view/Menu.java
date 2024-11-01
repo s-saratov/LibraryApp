@@ -70,8 +70,10 @@ public class Menu {
                 "\nМеню книг:\n" +
                         "1. Показать список всех книг\n" +
                         "2. Показать список всех книг, доступных для взятия к прочтению\n" +
-                        "3. Взять книгу\n" +
-                        "4. Вернуть книгу\n" +
+                        "3. Поиск книги по названию\n" +
+                        "4. Поиск книги по автору\n" +
+                        "5. Взять книгу\n" +
+                        "6. Вернуть книгу\n" +
                         "0. Вернуться в предыдущее меню"
         );
         int choice = getSelection();
@@ -91,6 +93,22 @@ public class Menu {
                     showBookMenu();
                     break;
                 case 3:
+                    System.out.print("Введите название (или часть): ");
+                    String searchValue = scanner.nextLine();
+                    System.out.println("\nРезультаты поиска:\n");
+                    System.out.println(Utils.printBooks(service.getBooksByTitle(searchValue)));
+                    waitRead();
+                    showBookMenu();
+                    break;
+                case 4:
+                    System.out.print("Введите автора (или часть): ");
+                    searchValue = scanner.nextLine();
+                    System.out.println("\nРезультаты поиска:\n");
+                    System.out.println(Utils.printBooks(service.getBooksByAuthor(searchValue)));
+                    waitRead();
+                    showBookMenu();
+                    break;
+                case 5:
                     if(service.getActiveUser() == null) {
                         System.out.println("\u001B[31m\nВы не авторизованы в системе. Пройдите авторизацию.\u001B[0m");
                         waitRead();
@@ -110,7 +128,7 @@ public class Menu {
                     waitRead();
                     showBookMenu();
                     break;
-                case 4:
+                case 6:
                     if(service.getActiveUser() == null) {
                         System.out.println("\u001B[31m\nВы не авторизованы в системе. Пройдите авторизацию.\u001B[0m");
                         waitRead();
