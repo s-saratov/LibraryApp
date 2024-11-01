@@ -46,7 +46,7 @@ public class User {
   }
 
   public String setEmail(String email) {
-    if (ValidationUtils.isValidEmail(email)) {
+    if (Utils.isValidEmail(email)) {
       this.email = email;
       return email;
     } else {
@@ -59,7 +59,7 @@ public class User {
   }
 
   public String setPassword(String password) {
-    if (ValidationUtils.isValidPassword(password)) {
+    if (Utils.isValidPassword(password)) {
       this.password = password;
       return password;
     } else {
