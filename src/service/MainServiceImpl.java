@@ -30,9 +30,10 @@ public class MainServiceImpl implements MainService {
 
   // Добавляет книгу в общий список
   @Override
-  public void addBook(String author, String title, int year, String publisher) {
-    bookRepository.addBook(author, title, year, publisher);
+  public boolean addBook(String author, String title, int year, String publisher) {
+    return bookRepository.addBook(author, title, year, publisher);
   }
+
 
   // Регистрирует пользователя на основании переданных адреса электронной почты и пароля, возвращает экземпляр класса
   @Override
