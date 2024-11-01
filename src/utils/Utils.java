@@ -1,6 +1,7 @@
 package utils;
 
 import model.Book;
+import model.User;
 
 import java.math.BigInteger;
 import java.time.Year;
@@ -166,4 +167,15 @@ public class Utils {
         }
         return result;
     }
+
+    // Возвращает список пользователей в табличном формате
+    public static String printUsers(MyList<User> users) {
+        String result = String.format("\u001B[33m%-5s %-30s %-30s %-15s\u001B[0m\n", "ID:", "Email:", "Password:", "Role:");
+        for (User user : users) {
+            result = result.concat(String.format("%-5d %-30s %-30s %-15s\n",
+                    user.getId(), user.getEmail(), user.getPassword(), user.getRole()));
+        }
+        return result;
+    }
+
 }

@@ -1,4 +1,5 @@
 import model.Book;
+import model.Role;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;

@@ -51,6 +51,13 @@ public class Menu {
                     showUserMenu();
                     break;
                 case 3:
+                    if (service.getActiveUser() == null) {
+                        System.out.print("\u001B[31m\nДоступ запрещён! Вы не авторизованы как администратором системы." +
+                                "\u001B[0m\n");
+                        waitRead();
+                        showMainMenu();
+                        break;
+                    }
                     showAdminMenu();
                     break;
                 case 0:
@@ -328,10 +335,10 @@ public class Menu {
 
         System.out.println(
                 "Меню администратора\n" +
-                        "1. Заблокировать пользователя\n" +
-                        "2. Разблокировать пользователя\n" +
-                        "3. Добавить новую книгу\n" +
-                        "4. Изменить дату возврата книги\n" +
+                        "1. Посмотреть список всех пользователей\n" +
+                        "2. Заблокировать пользователя\n" +
+                        "3. Разблокировать пользователя\n" +
+                        "4. Добавить новую книгу\n" +
                         "0. Вернуться в предыдущее меню"
         );
 
@@ -345,84 +352,96 @@ public class Menu {
                     this.showMainMenu();
                     break;
 
-                // Заблокировать пользователя
                 case 1:
-                    System.out.println("\nВыберете пользователя для блокировки:");
-                    System.out.println(this.service.getUsersByRole(Role.ADMIN, Role.USER).toString());
+                    System.out.println("\nПолный список пользователей системы:\n");
+                    System.out.println(Utils.printUsers(service.getUsersByRole(Role.ADMIN, Role.USER, Role.BLOCKED)));
+                    waitRead();
+                    showAdminMenu();
+                    break;
 
-                    System.out.print("Введите электронную почту блокируемого пользователя: ");
-                    String email = this.scanner.nextLine();
+                // Заблокировать пользователя
+                case 2:
+                    System.out.println("\nВыберете пользователя для блокировки по ID:\n");
+                    System.out.println(Utils.printUsers(service.getUsersByRole(Role.ADMIN, Role.USER)));
 
-                    while (this.service.getUserByEmail(email) == null) {
-                        System.out.print("Введённый Вами адрес некорректен. Повторите ввод: ");
-                        email = this.scanner.nextLine();
+                    int id = getSelection();
+
+                    while (this.service.getUserByID(id) == null) {
+                        System.out.print("Введённый Вами ID некорректен. ");
+                        id = getSelection();
                     }
 
-                    this.service.getUserByEmail(email).setRole(Role.BLOCKED);
-                    System.out.printf("\nПользователь %s заблокирован.", email);
+                    this.service.getUserByID(id).setRole(Role.BLOCKED);
+                    System.out.printf("\nПользователь %s заблокирован.\n", this.service.getUserByID(id).getEmail());
                     this.waitRead();
                     this.showAdminMenu();
                     break;
 
                 // Разблокировать пользователя
-                case 2:
-                    System.out.println("\nВыберете пользователя для разблокирования:");
-                    System.out.println(this.service.getUsersByRole(Role.BLOCKED, Role.USER).toString());
+                case 3:
+                    System.out.println("\nВыберете пользователя для разблокирования по ID:\n");
+                    System.out.println(Utils.printUsers(service.getUsersByRole(Role.BLOCKED)));
 
-                    System.out.print("Введите электронную почту разблокируемого пользователя: ");
-                    email = this.scanner.nextLine();
+                    id = getSelection();
 
-                    while (this.service.getUserByEmail(email) == null) {
-                        System.out.print("Введённый Вами адрес некорректен. Повторите ввод: ");
-                        email = this.scanner.nextLine();
+                    while (this.service.getUserByID(id) == null) {
+                        System.out.print("Введённый Вами ID некорректен. ");
+                        id = getSelection();
                     }
 
-                    this.service.getUserByEmail(email).setRole(Role.USER);
-                    System.out.printf("\nПользователь %s разблокирован.", email);
+                    this.service.getUserByID(id).setRole(Role.USER);
+                    System.out.printf("\nПользователь %s разблокирован.\n", this.service.getUserByID(id).getEmail());
                     this.waitRead();
                     this.showAdminMenu();
                     break;
 
                 // Добавить новую книгу
-                case 3:
+                case 4:
                     System.out.println("\nДобавление новой книги.");
 
-                    System.out.print("Введите название книги:");
+                    System.out.print("Введите название книги: ");
                     String title = this.scanner.nextLine();
 
                     int year;
 
                     while (true) {
-                        System.out.print("Введите год выпуска:");
-                        year = (this.scanner.hasNextInt() ? this.scanner.nextInt() : -1);
+                        System.out.print("Введите год издания: ");
 
-                        if (year <= 0 || year > 2024) {
-                            System.out.println("\nВы ввели некорректный год.\nПожалуйста, повторите ввод.\n");
-                            this.scanner.nextLine();
-                        } else break;
+                        if (this.scanner.hasNextInt()) {
+                            year = this.scanner.nextInt();
+                            this.scanner.nextLine();  // Очистка буфера после успешного ввода числа
+
+                            if (year <= 0 || year > 2024) {
+                                System.out.println("\nВы ввели некорректный год.\nПожалуйста, повторите ввод.\n");
+                            } else {
+                                break;  // Выход из цикла при корректном годе
+                            }
+                        } else {
+                            System.out.println("\nНекорректный ввод. Пожалуйста, введите число.");
+                            this.scanner.nextLine();  // Очистка буфера после некорректного ввода
+                        }
                     }
 
-                    System.out.print("Введите автора книги:");
+                    System.out.print("Введите автора книги: ");
                     String author = this.scanner.nextLine();
 
-                    System.out.print("Введите издателя книги:");
+                    System.out.print("Введите издателя книги: ");
                     String publisher = this.scanner.nextLine();
 
                     this.service.addBook(author, title, year, publisher);
                     System.out.printf(
-                            "\nКнига: %s - %s %d г. (%s) успешно добавлена!",
+                            "\nКнига: %s - %s %d г. (%s) успешно добавлена!\n",
                             author,
                             title,
                             year,
-                            title
+                            publisher
                     );
 
                     this.waitRead();
                     this.showAdminMenu();
                     break;
-
                 // Изменить дату возврата книги
-                case 4:
+//                case 4:
 //                    System.out.println("\nИзменение даты возврата книги.\n");
 //
 //                    System.out.println(this.service.getFreeBooks().toString());

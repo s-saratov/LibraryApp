@@ -102,11 +102,6 @@ public class MainServiceImpl implements MainService {
   }
 
   @Override
-  public MyList<User> getUsersByRole(Role roles, Role user) {
-    return null;
-  }
-
-  @Override
   public MyList<User> getUsersByRole(Role... roles) {
     return userRepository.getUsersByRole(roles);
   }
