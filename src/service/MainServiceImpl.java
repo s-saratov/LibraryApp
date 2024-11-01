@@ -18,127 +18,99 @@ public class MainServiceImpl implements MainService {
   private User activeUser;
 
   // Конструктор
-
   public MainServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
     this.bookRepository = bookRepository;
     this.userRepository = userRepository;
   }
 
-  // Методы
-
   // === CREATE ===
 
-  // Добавляет книгу в общий список
   @Override
   public boolean addBook(String author, String title, int year, String publisher) {
     return bookRepository.addBook(author, title, year, publisher);
   }
 
-
-  // Регистрирует пользователя на основании переданных адреса электронной почты и пароля, возвращает экземпляр класса
   @Override
   public User registerUser(String email, String password) {
-    if (email == null || password == null) return null; // исключение передачи null
+    if (email == null || password == null) return null;
     if (userRepository.isEmailExists(email)) {
       System.out.println("Email already exists");
       return null;
     }
-    User user = userRepository.addUser(email, password);
-    return user;
+    return userRepository.addUser(email, password);
   }
 
   // === READ ===
 
-  // Возвращает текущий список всех книг
   @Override
   public MyList<Book> getAllBooks() {
     return bookRepository.getAllBooks();
   }
 
-  // Возвращает текущий список всех книг, отсортированный по автору
   @Override
   public MyList<Book> getAllBooksSortedByAuthor(String author) {
     // TODO: написать реализацию!
     return null;
   }
 
-  // Возвращает текущий список всех книг, отсортированный по названию
   @Override
   public MyList<Book> getAllBooksSortedByTitle(String title) {
     // TODO: написать реализацию!
     return null;
   }
 
-  // Возвращает книгу по ID
   @Override
   public Book getBookByID(int id) {
-    if (id < 0) return null; // исключаем передачу некорректных данных
+    if (id < 0) return null;
     return bookRepository.getByID(id);
   }
 
-  // Возвращает список книг по названию
   @Override
   public MyList<Book> getBooksByTitle(String title) {
     return bookRepository.getBooksByTitle(title);
   }
 
-  // Возвращает список книг по автору
   @Override
   public MyList<Book> getBooksByAuthor(String author) {
     return bookRepository.getBooksByAuthor(author);
   }
 
-  // Возвращает список невзятых книг
   @Override
   public MyList<Book> getFreeBooks() {
     return bookRepository.getFreeBooks();
   }
 
-  // Возвращает количество дней, которое книга находится у читателя
   @Override
   public int borrowingTerm(int id) {
     // TODO: написать реализацию!
     return 0;
   }
 
-  // Возвращает объект пользователя по ID
   @Override
   public User getUserByID(int id) {
     return userRepository.getUserById(id);
   }
 
-  // Возвращает объект пользователя по адресу электронной почты
   @Override
   public User getUserByEmail(String email) {
     return userRepository.getUserByEmail(email);
   }
 
-  // Возвращает активного пользователя
   @Override
   public User getActiveUser() {
     return activeUser;
   }
 
-
-  /**
-   * @param roles
-   * @param user
-   * @return
-   */
   @Override
   public MyList<User> getUsersByRole(Role roles, Role user) {
     return null;
   }
 
-
-  // Возвращает список пользователей по заданным ролям
   @Override
   public MyList<User> getUsersByRole(Role... roles) {
     return userRepository.getUsersByRole(roles);
   }
 
-
-  // Принимает ID книги и возвращает адрес электронной почты пользователя, у которого она находится
   @Override
   public User getBorrowersEmail(int id) {
     return userRepository.getUserById(id);
@@ -146,10 +118,9 @@ public class MainServiceImpl implements MainService {
 
   // === UPDATE ===
 
-  // Осуществляет взятие книги в прочтение и возвращает статус успеха операции (сегодняшней датой)
- @Override
+  @Override
   public boolean takeBook(int id) {
-    if (id < 0) return false; // исключаем передачу некорректных данных
+    if (id < 0) return false;
     Book book = bookRepository.getByID(id);
     if (book == null || book.isBusy()) return false;
     book.setStatus(BookStatus.BORROWED);
@@ -157,58 +128,57 @@ public class MainServiceImpl implements MainService {
     return true;
   }
 
-
-
-
-  // Осуществляет взятие книги в прочтение и возвращает статус успеха операции (с конкретной датой, отличающейся от сегодняшней)
   @Override
   public boolean takeBook(int id, LocalDate newDate) {
-    // Проверка на корректность данных
     if (id < 0 || newDate == null) return false;
     Book book = bookRepository.getByID(id);
-    // Проверка, свободна ли книга
     if (book == null || book.isBusy()) return false;
 
     book.setStatus(BookStatus.BORROWED);
-    // Устанавливаем дату взятия
     book.setBorrowDate(newDate);
     activeUser.addBookToUserBooks(book);
     return true;
   }
 
-  // Изменяет дату взятия книги в прочтение и возвращает статус успеха операции
   @Override
-  public boolean updateBorrowDate(int id, LocalDate NewBorrowDate) {
+  public boolean updateBorrowDate(int id, LocalDate newBorrowDate) {
+    if (id < 0 || newBorrowDate == null) return false;
     Book book = bookRepository.getByID(id);
-    if (NewBorrowDate == null || id < 0) {
+    book.setBorrowDate(newBorrowDate);
+    return true;
+  }
+
+  @Override
+  public boolean returnBook(int id) {
+    if (id < 0) return false;
+
+    Book book = bookRepository.getByID(id);
+    if (book == null) {
+      System.out.println("Книга с таким ID не найдена.");
       return false;
     }
 
-    book.setBorrowDate(NewBorrowDate);
+    if (activeUser == null || !activeUser.getUserBooks().contains(book)) {
+      System.out.println("Книга не принадлежит активному пользователю.");
+      return false;
+    }
 
+    if (book.getStatus() != BookStatus.BORROWED) {
+      System.out.println("Книга не была взята.");
+      return false;
+    }
+
+    book.setStatus(BookStatus.AVAILABLE);
+    activeUser.removeBookFromUserBooks(book);
+    System.out.println("Книга успешно возвращена.");
     return true;
   }
 
-
-  // Осуществляет возврат книги от читателя и возвращает статус успеха операции
-  @Override
-  public boolean returnBook(int id) {
-    if (id < 0) return false; // исключаем передачу некорректных данных
-    if (activeUser.getUserBooks().isEmpty()) return false;
-    if (!activeUser.getUserBooks().contains(bookRepository.getByID(id))) return false;
-
-    activeUser.removeBookFromUserBooks(bookRepository.getByID(id));
-    bookRepository.getByID(id).setBusy(false);
-    return true;
-  }
-
-  // Осуществляет вход пользователя в систему и возвращает статус успеха операции
   @Override
   public boolean loginUser(String email, String password) {
-    if (email == null || password == null) return false; // исключение передачи null
+    if (email == null || password == null) return false;
 
     User user = userRepository.getUserByEmail(email);
-
     if (user == null) {
       System.out.println("Адрес электронной почты введён неверно. Повторите ввод.");
       return false;
@@ -228,7 +198,6 @@ public class MainServiceImpl implements MainService {
     return true;
   }
 
-  // Осуществляет выход пользователя из системы
   @Override
   public void logout() {
     activeUser = null;
@@ -236,7 +205,6 @@ public class MainServiceImpl implements MainService {
 
   // === DELETE ===
 
-  // Удаляет книгу по id
   @Override
   public Book deleteBookByID(int id) {
     Book book = bookRepository.getByID(id);
