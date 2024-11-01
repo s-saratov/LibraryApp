@@ -93,13 +93,13 @@ public class Book {
 
 
   public void setBusy(boolean b) {
-    // TODO: setBusy()
+    if (b) this.status = BookStatus.BORROWED;
+    else this.status = BookStatus.AVAILABLE;
   }
 
-
   public boolean isBusy() {
-    // TODO: setBorrowDate()
-    return false;
+    if (status == BookStatus.AVAILABLE) return false;
+    else return true;
   }
 
 
