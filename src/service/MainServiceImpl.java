@@ -75,6 +75,12 @@ public class MainServiceImpl implements MainService {
     return bookRepository.getByID(id);
   }
 
+  // Возвращает список книг по названию
+  @Override
+  public MyList<Book> getBooksByTitle(String title) {
+    return bookRepository.getBooksByTitle(title);
+  }
+
   // Возвращает список книг по автору
   @Override
   public MyList<Book> getBooksByAuthor(String author) {
