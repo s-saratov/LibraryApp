@@ -38,11 +38,11 @@ public class MainServiceImpl implements MainService {
       return null;
     }
 
-    if (Utils.isValidEmail(email))  {
+    if (!Utils.isValidEmail(email))  {
       return null;
     }
 
-    if (Utils.isValidPassword(password))  {
+    if (!Utils.isValidPassword(password))  {
       return null;
     }
 
