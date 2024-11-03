@@ -40,6 +40,9 @@ public interface MainService {
     // Возвращает список невзятых книг
     MyList<Book> getFreeBooks();
 
+    // Возвращает список взятых книг
+    public MyList<Book> getBorrowedBooks();
+
     // Возвращает количество дней, которое книга находится у читателя
     int borrowingTerm (int id);
 

@@ -76,11 +76,12 @@ public class Menu {
         System.out.println(
                 "\nМеню книг:\n" +
                         "1. Показать список всех книг\n" +
-                        "2. Показать список всех книг, доступных для взятия к прочтению\n" +
-                        "3. Поиск книги по названию\n" +
-                        "4. Поиск книги по автору\n" +
-                        "5. Взять книгу\n" +
-                        "6. Вернуть книгу\n" +
+                        "2. Показать список книг, доступных для взятия к прочтению\n" +
+                        "3. Показать список книг, находящихся у читателей\n" +
+                        "4. Поиск книги по названию\n" +
+                        "5. Поиск книги по автору\n" +
+                        "6. Взять книгу\n" +
+                        "7. Вернуть книгу\n" +
                         "0. Вернуться в предыдущее меню"
         );
         int choice = getSelection();
@@ -94,28 +95,34 @@ public class Menu {
                     showBookMenu();
                     break;
                 case 2:
-                    System.out.println("\nСписок всех книг библиотеки, доступных для взятия к прочтению:\n");
+                    System.out.println("\nСписок книг библиотеки, доступных для взятия к прочтению:\n");
                     System.out.println(Utils.printBooks(service.getFreeBooks()));
                     waitRead();
                     showBookMenu();
                     break;
                 case 3:
-                    System.out.print("Введите название (или часть): ");
+                    System.out.println("\nСписок книг, находящихся у читателей:\n");
+                    System.out.println(Utils.printBooks(service.getBorrowedBooks()));
+                    waitRead();
+                    showBookMenu();
+                    break;
+                case 4:
+                    System.out.print("\nВведите название (или часть): ");
                     String searchValue = scanner.nextLine();
                     System.out.println("\nРезультаты поиска:\n");
                     System.out.println(Utils.printBooks(service.getBooksByTitle(searchValue)));
                     waitRead();
                     showBookMenu();
                     break;
-                case 4:
-                    System.out.print("Введите автора (или часть): ");
+                case 5:
+                    System.out.print("\nВведите автора (или часть): ");
                     searchValue = scanner.nextLine();
                     System.out.println("\nРезультаты поиска:\n");
                     System.out.println(Utils.printBooks(service.getBooksByAuthor(searchValue)));
                     waitRead();
                     showBookMenu();
                     break;
-                case 5:
+                case 6:
                     if(service.getActiveUser() == null) {
                         System.out.println("\u001B[31m\nВы не авторизованы в системе. Пройдите авторизацию.\u001B[0m");
                         waitRead();
@@ -135,7 +142,7 @@ public class Menu {
                     waitRead();
                     showBookMenu();
                     break;
-                case 6:
+                case 7:
                     if(service.getActiveUser() == null) {
                         System.out.println("\u001B[31m\nВы не авторизованы в системе. Пройдите авторизацию.\u001B[0m");
                         waitRead();
@@ -334,11 +341,13 @@ public class Menu {
         }
 
         System.out.println(
-                "Меню администратора\n" +
+                "\nМеню администратора\n" +
                         "1. Посмотреть список всех пользователей\n" +
                         "2. Заблокировать пользователя\n" +
                         "3. Разблокировать пользователя\n" +
-                        "4. Добавить новую книгу\n" +
+                        "4. Показать, у кого находятся взятые книги\n" +
+                        "5. Добавить новую книгу\n" +
+                        "6. Редактировать информацию о книге\n" +
                         "0. Вернуться в предыдущее меню"
         );
 
@@ -395,8 +404,15 @@ public class Menu {
                     this.showAdminMenu();
                     break;
 
-                // Добавить новую книгу
+                // Показать, у кого находятся взятые книги
                 case 4:
+                    System.out.println("\n" + Utils.printBooksAdmin(service.getBorrowedBooks()));
+                    this.waitRead();
+                    this.showAdminMenu();
+                    break;
+
+                // Добавить новую книгу
+                case 5:
                     System.out.println("\nДобавление новой книги.");
 
                     System.out.print("Введите название книги: ");
@@ -440,6 +456,167 @@ public class Menu {
                     this.waitRead();
                     this.showAdminMenu();
                     break;
+
+                // Редактировать информацию о книге
+                case 6:
+                    System.out.println("\nВыберите по ID книгу, по которой хотите отредактировать информацию:\n");
+                    System.out.println(Utils.printBooksAdmin(service.getAllBooks()));
+
+                    id = getSelection();
+
+                    while (this.service.getBookByID(id) == null) {
+                        System.out.print("Введённый Вами ID некорректен. ");
+                        id = getSelection();
+                    }
+
+                    System.out.println("Какое поле Вы хотите изменить?\n" +
+                            "1. Автор\n" +
+                            "2. Название\n" +
+                            "3. Год издания\n" +
+                            "4. Издательство\n" +
+                            "5. Статус\n" +
+                            "0. Вернуться в предыдущее меню"
+                    );
+
+                    choice = getSelection();
+
+                    while (true) {
+                        switch (choice) {
+
+                            // Вернуться в предыдущее меню
+                            case 0:
+                                this.showAdminMenu();
+                                break;
+
+                            case 1:
+                                System.out.printf("\nВведите нового автора книги ID #%d (текущий %s): ",
+                                        id, service.getBookByID(id).getAuthor());
+                                author = scanner.nextLine();
+                                service.getBookByID(id).setAuthor(author);
+                                System.out.printf("Изменение автора книги ID #%d успешно завершено.\n", id);
+                                waitRead();
+                                showAdminMenu();
+                                break;
+
+                            case 2:
+                                System.out.printf("\nВведите новое название книги ID #%d (текущее %s): ",
+                                        id, service.getBookByID(id).getTitle());
+                                title = scanner.nextLine();
+                                service.getBookByID(id).setTitle(title);
+                                System.out.printf("Изменение названия книги ID #%d успешно завершено.\n", id);
+                                waitRead();
+                                showAdminMenu();
+                                break;
+
+                            case 3:
+                                System.out.printf("\nВведите новый год издания книги ID #%d (текущий %d): ",
+                                        id, service.getBookByID(id).getYear());
+                                while (true) {
+                                    System.out.print("Введите год издания: ");
+
+                                    if (this.scanner.hasNextInt()) {
+                                        year = this.scanner.nextInt();
+                                        this.scanner.nextLine();  // Очистка буфера после успешного ввода числа
+
+                                        if (year <= 0 || year > 2024) {
+                                            System.out.println("\nВы ввели некорректный год.\nПожалуйста, повторите ввод.\n");
+                                        } else {
+                                            break;  // Выход из цикла при корректном годе
+                                        }
+                                    } else {
+                                        System.out.println("\nНекорректный ввод. Пожалуйста, введите число.");
+                                        this.scanner.nextLine();  // Очистка буфера после некорректного ввода
+                                    }
+                                }
+
+                                service.getBookByID(id).setYear(year);
+                                System.out.printf("Изменение года издания книги ID #%d успешно завершено.\n", id);
+                                waitRead();
+                                showAdminMenu();
+                                break;
+
+                            case 4:
+                                System.out.printf("\nВведите новое издательство книги ID #%d (текущее %s): ",
+                                        id, service.getBookByID(id).getPublisher());
+                                publisher = scanner.nextLine();
+                                service.getBookByID(id).setPublisher(publisher);
+                                System.out.printf("Изменение издательства книги ID #%d успешно завершено.\n", id);
+                                waitRead();
+                                showAdminMenu();
+                                break;
+
+                            case 5:
+                                System.out.printf("\nВыберете новый статус книги ID #%d (текущий %s):\n" +
+                                                "1. AVAILABLE\n" +
+                                                "2. BORROWED\n" +
+                                                "3. BLOCKED\n" +
+                                                "0. Вернуться в предыдущее меню\n",
+                                        id, service.getBookByID(id).getStatus());
+
+                                choice = getSelection();
+
+                                while (true) {
+                                    switch (choice) {
+
+                                        case 0:
+                                            this.showAdminMenu();
+                                            break;
+
+                                        case 1:
+                                            if (service.getBookByID(id).getStatus().equals(BookStatus.BORROWED)) {
+                                                service.getBookByID(id).getBorrower().removeBookFromUserBooks(service.getBookByID(id));
+                                            }
+                                            service.getBookByID(id).setBorrower(null);
+                                            service.getBookByID(id).setStatus(BookStatus.AVAILABLE);
+                                            System.out.printf("\nИзменение статуса книги ID #%d успешно завершено.\n", id);
+                                            waitRead();
+                                            showAdminMenu();
+                                            break;
+
+                                        case 2:
+                                            if (service.getBookByID(id).getStatus().equals(BookStatus.BORROWED)) {
+                                                service.getBookByID(id).getBorrower().removeBookFromUserBooks(service.getBookByID(id));
+                                            }
+                                            System.out.println("\nКакому пользователю по ID присвоить книгу?");
+                                            System.out.println(Utils.printUsers(service.getUsersByRole(Role.ADMIN, Role.USER)));
+                                            int userID = getSelection();
+                                            while (this.service.getUserByID(userID) == null) {
+                                                System.out.print("Введённый Вами ID некорректен. ");
+                                                id = getSelection();
+                                            }
+                                            service.getUserByID(userID).addBookToUserBooks(service.getBookByID(id));
+                                            service.getBookByID(id).setBorrower(service.getUserByID(userID));
+                                            service.getBookByID(id).setStatus(BookStatus.BORROWED);
+                                            System.out.printf("\nИзменение статуса книги ID #%d успешно завершено.\n", id);
+                                            waitRead();
+                                            showAdminMenu();
+                                            break;
+
+                                        case 3:
+                                            if (service.getBookByID(id).getStatus().equals(BookStatus.BORROWED)) {
+                                                service.getBookByID(id).getBorrower().removeBookFromUserBooks(service.getBookByID(id));
+                                            }
+                                            service.getBookByID(id).setBorrower(null);
+                                            service.getBookByID(id).setStatus(BookStatus.BLOCKED);
+                                            System.out.printf("\nИзменение статуса книги ID #%d успешно завершено.\n", id);
+                                            waitRead();
+                                            showAdminMenu();
+                                            break;
+
+                                        default:
+                                            System.out.print("Введённое Вами число некорректно!");
+                                            choice = this.getSelection();
+                                            break;
+                                    }
+                                }
+
+                            default:
+                                System.out.print("Введённое Вами число некорректно!");
+                                choice = this.getSelection();
+                                break;
+                        }
+                    }
+
                 // Изменить дату возврата книги
 //                case 4:
 //                    System.out.println("\nИзменение даты возврата книги.\n");
