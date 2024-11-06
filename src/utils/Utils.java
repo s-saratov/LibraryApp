@@ -171,6 +171,24 @@ public class Utils {
         return result;
     }
 
+    // Возвращает список книг в табличном формате (для администратора)
+    public static String printBooksAdmin(MyList<Book> books) {
+        String result = String.format("\u001B[33m%-5s %-20s %-35s %-7s %-25s %-10s %s\u001B[0m\n",
+                "ID:", "Author:", "Title:", "Year:", "Publisher:", "Status", "Borrower:");
+        for (Book book : books) {
+            result = result.concat(String.format("%-5d %-20s %-35s %-7d %-25s %-10s %s\n",
+                    book.getId(),
+                    book.getAuthor(),
+                    book.getTitle(),
+                    book.getYear(),
+                    book.getPublisher(),
+                    book.getStatus(),
+                    (book.getBorrower() == null) ? "-" : book.getBorrower().getEmail()
+            ));
+        }
+        return result;
+    }
+
 
     // Возвращает список пользователей в табличном формате
     public static String printUsers(MyList<User> users) {

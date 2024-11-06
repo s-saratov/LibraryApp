@@ -21,7 +21,7 @@ public class BookRepositoryImpl implements BookRepository {
         addBook("Harper Lee", "To Kill a Mockingbird", 1960, "J.B. Lippincott & Co.");
         addBook("J.R.R. Tolkien", "The Lord of the Rings", 1954, "George Allen & Unwin");
         addBook("Jane Austen", "Pride and Prejudice", 1813, "T. Egerton, Whitehall");
-        addBook("Mark Twain", "The Adventures of Huckleberry Finn", 1885, "Chatto & Windus / Charles L. Webster And Company");
+        addBook("Mark Twain", "The Adventures of Huckleberry Finn", 1885, "Chatto & Windus");
         addBook("F. Scott Fitzgerald", "The Great Gatsby", 1925, "Charles Scribner's Sons");
         addBook("Mary Shelley", "Frankenstein", 1823, "G. and W.B. Whittaker");
         addBook("Charlotte Brontë", "Jane Eyre", 1847, "Smith, Elder & Co.");
@@ -81,6 +81,17 @@ public class BookRepositoryImpl implements BookRepository {
         MyList<Book> result = new MyArrayList<>();
         for (Book book : books) {
             if (book.getStatus() == BookStatus.AVAILABLE) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public MyList<Book> getBorrowedBooks() {
+        MyList<Book> result = new MyArrayList<>();
+        for (Book book : books) {
+            if (book.getStatus() == BookStatus.BORROWED) {
                 result.add(book);
             }
         }

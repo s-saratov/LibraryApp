@@ -20,13 +20,16 @@ public class LibraryApp {
     Menu menu = new Menu(service);
 
     service.getBookByID(1).setBusy(true);
-    service.getUserByID(2).addBookToUserBooks(bookRepository.getByID(1));
+    service.getBookByID(1).setBorrower(service.getUserByID(4));
+    service.getUserByID(4).addBookToUserBooks(bookRepository.getByID(1));
     service.getBookByID(7).setBusy(true);
-    service.getUserByID(2).addBookToUserBooks(bookRepository.getByID(7));
+    service.getBookByID(7).setBorrower(service.getUserByID(4));
+    service.getUserByID(4).addBookToUserBooks(bookRepository.getByID(7));
 
-//    for (Book book : bookRepository.getAllBooks()) {
-//      System.out.println(book.getStatus());
-//    }
+
+    System.out.println(Utils.printUsers(service.getUsersByRole(Role.ADMIN, Role.USER, Role.BLOCKED)));
+
+    System.out.println(Utils.printBooksAdmin(service.getAllBooks()));
 
     menu.run();
 

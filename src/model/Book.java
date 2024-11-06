@@ -23,6 +23,9 @@ public class Book {
   // Статус книги
   private BookStatus status;
 
+  // Пользователь, взявший книгу
+  User borrower;
+
   // Дата взятия книги
   private LocalDate borrowDate;
 
@@ -34,9 +37,10 @@ public class Book {
     this.year = year;
     this.publisher = publisher;
     this.status = BookStatus.AVAILABLE; // Книга доступна по умолчанию
+    this.borrower = null;
   }
 
-  // Геттеры и сеттерыы (не буду расписывать какой для чего)
+  // Геттеры и сеттеры (не буду расписывать какой для чего)
 
   public int getId() {
     return id; // Геттер для id (без сеттера по моему так по условию)
@@ -82,6 +86,19 @@ public class Book {
     this.status = status;
   }
 
+  public User getBorrower() {
+    return borrower;
+  }
+
+  public void setBorrower(User borrower) {
+    this.borrower = borrower;
+  }
+
+  // Удаляет связь с читателем
+  public void removeBorrower() {
+    this.borrower = null;
+  }
+
   // Переопределение "equals" для сравнения объектов
   @Override
   public boolean equals(Object o) {
@@ -116,17 +133,18 @@ public class Book {
     this.borrowDate = newBorrowDate;
   }
 
-
   //  toString -> в строку
+
   @Override
   public String toString() {
     return "Book{" +
-           "id=" + id +
-           ", автор='" + author + '\'' +
-           ", название='" + title + '\'' +
-           ", год=" + year +
-           ", издательство='" + publisher + '\'' +
-           ", статус=" + status +
-           '}';
+            "id=" + id +
+            ", author='" + author + '\'' +
+            ", title='" + title + '\'' +
+            ", year=" + year +
+            ", publisher='" + publisher + '\'' +
+            ", status=" + status +
+            ", borrower=" + borrower +
+            '}';
   }
 }
