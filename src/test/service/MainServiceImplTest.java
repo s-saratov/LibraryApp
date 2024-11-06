@@ -63,6 +63,8 @@ public class MainServiceImplTest {
 
     assertNotNull(result, "Ожидается экземпляр User для действительных учетных данных.");
     assertInstanceOf(User.class, result, "Ожидается экземпляр User.");
+    User user = mainService.getUserByEmail(email);
+    assertNotNull(user, "Ожидается, что пользователь есть в списке пользователь");
   }
 
 
@@ -75,6 +77,7 @@ public class MainServiceImplTest {
     User result = this.mainService.registerUser(email, password);
 
     assertNull(result, "Ожидается null для недопустимых учетных данных.");
+    assertNull(mainService.getUserByEmail(email));
   }
 
 
@@ -85,7 +88,7 @@ public class MainServiceImplTest {
   public void testGetAllBooks() {
     MyList<Book> books = this.mainService.getAllBooks();
 
-    assertTrue(books.size() > 0);
+    assertTrue(books != null && !books.isEmpty());
   }
 
 }

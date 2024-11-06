@@ -33,24 +33,30 @@ public class MainServiceImpl implements MainService {
     return bookRepository.addBook(author, title, year, publisher);
   }
 
-  // Регистрирует пользователя на основании переданных адреса электронной почты и пароля, возвращает экземпляр класса
+  
+  /**
+   * Регистрирует пользователя на основании переданных адреса электронной почты и пароля, возвращает экземпляр класса.
+   *
+   * @param email
+   * @param password
+   * @return Экземпляр класса {@code User}.
+   */
   @Override
   public User registerUser(String email, String password) {
-    if (email == null || password == null) {
+    if (!Utils.isValidEmail(email) || !Utils.isValidPassword(password)) {
+      System.out.println("Неверный email или password!");
       return null;
     }
-    if (Utils.isValidEmail(email))  {
+
+    if (repUser.isEmailExists(email)) {
+      System.out.println("Пользователь уже существует!");
       return null;
     }
-    if (Utils.isValidPassword(password))  {
-      return null;
-    }
-    if (userRepository.isEmailExists(email)) {
-      return null;
-    }
-    return userRepository.addUser(email, password);
+    
+    return this.userRepository.addUser(email, password);
   }
 
+  
   // === READ ===
 
   // Возвращает текущий список всех книг

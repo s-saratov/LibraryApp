@@ -56,6 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
    * @param password Пароль пользователя.
    * @return Объект пользователя {@code User}.
    */
+
   @Override
   public User addUser(String email, String password) {
     if (email == null || password == null) {
@@ -71,7 +72,10 @@ public class UserRepositoryImpl implements UserRepository {
 //    }
 
     if (this.isEmailExists(email)) {
-      return this.getUserByEmail(email);
+      return null;
+      // С таким подходом вам никак не определить в методе вызова, что НЕ был создан новый пользователь
+      // Т.е. сценарий, когда пользователь с таким email существует, вам никак не отловить в сервисе.
+//      return this.getUserByEmail(email);
     }
 
     User user = new User(this.currentID.getAndIncrement(), email, password);
@@ -97,12 +101,14 @@ public class UserRepositoryImpl implements UserRepository {
 
 
 
+    // Так быть не должно. Это не метод add (Create) - это какой-то гибрид (Create + Update)
     if (this.isEmailExists(email)) {
-      User user = this.getUserByEmail(email);
 
-      user.setRole(role);
+      return null;
 
-      return user;
+//      User user = this.getUserByEmail(email);
+//      user.setRole(role);
+//      return user;
     }
 
     User user = new User(this.currentID.getAndIncrement(), email, password, role);
